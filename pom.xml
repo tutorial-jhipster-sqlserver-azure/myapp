@@ -45,7 +45,8 @@
         <javassist.version>3.22.0-GA</javassist.version>
         <!-- The liquibase version should match the one managed by
         https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-dependencies/${spring-boot.version} -->
-        <liquibase.version>3.5.5</liquibase.version>
+        <liquibase.version>3.6.2</liquibase.version>
+        <liquibase-mssql.version>1.6.5</liquibase-mssql.version>
         <liquibase-hibernate5.version>3.6</liquibase-hibernate5.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <mapstruct.version>1.2.0.Final</mapstruct.version>
@@ -85,6 +86,9 @@
         <sonar.tests>${project.basedir}/src/test/</sonar.tests>
 
         <!-- jhipster-needle-maven-property -->
+        
+        <!-- Docker properties -->
+        <docker.image.prefix>myexamplecr.azurecr.io/example</docker.image.prefix>
     </properties>
 
     <dependencyManagement>
@@ -216,6 +220,7 @@
         <dependency>
             <groupId>com.github.sabomichal</groupId>
             <artifactId>liquibase-mssql</artifactId>
+            <version>${liquibase-mssql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -239,6 +244,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
+            <version>${liquibase.version}</version>
         </dependency>
         <dependency>
             <groupId>net.logstash.logback</groupId>
@@ -641,7 +647,9 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>myapp</repository>
+                    <repository>${docker.image.prefix}/${project.artifactId}</repository>
+                    <useMaveSettingsForAuth>true</useMaveSettingsForAuth>
+                    <tag>latest</tag>
                     <contextDirectory>${project.build.directory}</contextDirectory>
                 </configuration>
             </plugin>
